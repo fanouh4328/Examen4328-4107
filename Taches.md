@@ -26,7 +26,10 @@ __________________________________________
    -situation des gains: requête SQL(Sum(frais_appliques)) pour voir l'argent total genere par l'operateur via les retraits et transferts
    -situation des comptes clients: liste de tous les clients avec leur num et solde actuel
 ___________________________________________________
-NB: calcul des frais: creer une fonction d'aide
+NB: 
+   -calcul des frais: creer une fonction d'aide(param: type_operation et montant qui fait SELECT frais  FROM baremes_frais WHERE type_operation_id = X AND: montant BETWEEN montant_min AND montant_max(coeur du systeme)
+   -design(bootstrap): tableaux + formulaire simple(classes de base de bootstrap) 
+   -git workflow
 
 
 
