@@ -76,6 +76,13 @@ class Client extends BaseController
     // --- OPÉRATIONS ---
     public function executerOperation()
     {
+        if (!$this->session->has('client_id')) return redirect()->to('/client/login');
+
+    // Si la requête n'est pas un POST, on renvoie gentiment au dashboard
+    if ($this->request->getMethod() !== 'post') {
+        return redirect()->to('/client/dashboard');
+    }
+    
         if (!$this->isAuthenticated()) {
             return $this->redirectToLogin();
         }

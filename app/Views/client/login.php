@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Mobile Money - Connexion</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
 </head>
 <body class="bg-light">
     <div class="container mt-5">
@@ -17,10 +17,10 @@
                         <?php endif; ?>
                         <form action="<?= base_url('/client/doLogin') ?>" method="post">
                             <div class="mb-3">
-                                <label class="form-label">Numéro de Téléphone (033 / 037)</label>
-                                <input type="text" name="num_tel" class="form-control" placeholder="Ex: 0331234567" required>
+                                <label for="num_tel" class="form-label">Entrez votre numéro de téléphone</label>
+                                <input id="num_tel" type="text" name="num_tel" class="form-control" placeholder="Ex: 0331234567" required>
                             </div>
-                            <button type="submit" class="btn btn-primary w-100">Se connecter / S'inscrire</button>
+                            <button type="submit" class="btn btn-primary w-100">Se connecter</button>
                         </form>
                     </div>
                 </div>

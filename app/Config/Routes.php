@@ -8,9 +8,7 @@ $routes->get('/client/login', 'Client::login');
 $routes->post('/client/doLogin', 'Client::doLogin');
 $routes->get('/client/logout', 'Client::logout');
 $routes->get('/client/dashboard', 'Client::dashboard');
-$routes->post('/client/executerOperation', 'Client::executerOperation');
-$routes->get('/', 'Home::index');
-
+$routes->match(['get', 'post'], 'client/executerOperation', 'Client::executerOperation');
 
 // Partie opérateur
 
