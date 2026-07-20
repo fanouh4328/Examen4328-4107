@@ -13,11 +13,11 @@ ____________________________________________
       -clients: id, num_tel, solde, auto_login
 __________________________________________
 -Dev A: cote client et authentification
- -auto_login: formulaire pour le client(num_tel:033/037), verification base, if num n'existe pas, creation auto avec solde 0 (+equipement session)
- -espace_client(dashboard): affichage du solde actuel, historique des transactions propre à ce num
- -formulaire d'opérations: 
-   -depot/retrait: formulaire simple(auto)(mise à jour solde et enregistrement d'action)
-   -transfert:formulaire avec num du destinataire(valider prefixe) et montant, déduire(montant+frais) du solde de l'expediteur, ajouter montant au destinataire
+ -[x] auto_login: formulaire pour le client(num_tel:033/037), verification base, if num n'existe pas, creation auto avec solde 0 (+equipement session)
+ -[x] espace_client(dashboard): affichage du solde actuel, historique des transactions propre à ce num
+ -[x] formulaire d'opérations: 
+   -[x] depot/retrait: formulaire simple(auto)(mise à jour solde et enregistrement d'action)
+   -[x] transfert:formulaire avec num du destinataire(valider prefixe) et montant, déduire(montant+frais) du solde de l'expediteur, ajouter montant au destinataire
 __________________________________________
 -Dev B:cote operateur et back-end
  -config_prefixes: une vue/action pour lister et ajouter des prefixes
@@ -29,7 +29,15 @@ ___________________________________________________
 NB: 
    -calcul des frais: creer une fonction d'aide(param: type_operation et montant qui fait SELECT frais  FROM baremes_frais WHERE type_operation_id = X AND: montant BETWEEN montant_min AND montant_max(coeur du systeme)
    -design(bootstrap): tableaux + formulaire simple(classes de base de bootstrap) 
-   -git workflow
+   -git workflow: git add .
+git commit -m "Nom_du_devoir_à_pusher"
+git tag v1
+git push origin main --tags
+
+Reste à faire:
+ - Dev B complet: configuration des préfixes, gestion des barèmes, tableau de bord opérateur.
+ - Vérifier si le schéma doit réellement contenir un champ auto_login dans la table clients ou si la logique d'auto-inscription suffit.
+ - Finaliser le workflow git demandé dans le sujet si la livraison n'est pas encore taguée/pushée.
 
 
 
