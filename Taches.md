@@ -24,7 +24,9 @@ __________________________________________
  -gestion_baremes: interface pour voir et modifier les frais par tranche pour les retraits et transferts
  -tableau de bord operateur(statistique):
    -situation des gains: requête SQL(Sum(frais_appliques)) pour voir l'argent total genere par l'operateur via les retraits et transferts
-   -situation des comptes clients: liste de tous les clients avec leur 
+   -situation des comptes clients: liste de tous les clients avec leur num et solde actuel
+___________________________________________________
+NB: calcul des frais: creer une fonction d'aide
 
 
 
