@@ -21,3 +21,8 @@ $routes->post('operateur/prefixes/add', 'Operateur::ajouterPrefixe');
 
 $routes->get('operateur/baremes', 'Operateur::baremes');
 $routes->post('operateur/baremes/update/(:num)', 'Operateur::modifierFrais/$1');
+
+// V2 - Autres opérateurs
+
+$routes->get('operateur/autres-operateurs', 'Operateur::autresOperateurs');
+$routes->post('operateur/ajouter-operateur', 'Operateur::ajouterOperateur');

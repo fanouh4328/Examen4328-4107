@@ -37,6 +37,14 @@ CREATE TABLE baremes_frais (
     FOREIGN KEY (type_operation_id) REFERENCES types_operations(id) ON DELETE CASCADE
 );
 
+-- TABLE DES AUTRES OPÉRATEURS
+
+CREATE TABLE autres_operateurs (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    prefixe VARCHAR(10) NOT NULL UNIQUE,
+    commission REAL NOT NULL
+);
+
 -- 5. Table des transactions/historiques
 CREATE TABLE transactions (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -46,9 +54,12 @@ CREATE TABLE transactions (
     montant REAL NOT NULL,
     frais_appliques REAL NOT NULL,
     date_transaction DATETIME DEFAULT CURRENT_TIMESTAMP,
+    autres_operateurs_id INTEGER DEFAULT NULL, 
+
     FOREIGN KEY (client_id) REFERENCES clients(id),
     FOREIGN KEY (destinataire_id) REFERENCES clients(id),
-    FOREIGN KEY (type_operation_id) REFERENCES types_operations(id)
+    FOREIGN KEY (type_operation_id) REFERENCES types_operations(id),
+    FOREIGN KEY (autres_operateurs_id) REFERENCES autres_operateurs(id)
 );
 
 -- ============================================================================
@@ -77,12 +88,15 @@ FROM clients
 ORDER BY solde DESC;
 
 
+
+
 -- ============================================================================
 -- INSERTIONS INITIALES (DONNÉES DE CONFIGURATION)
 -- ============================================================================
 
 -- Insertion des préfixes initiaux exemples (033, 037)
 INSERT INTO prefixe_operateurs (prefixe) VALUES ('033'), ('037');
+
 
 -- Insertion des types d'opérations obligatoires
 INSERT INTO types_operations (id, nom) VALUES 
@@ -98,7 +112,7 @@ INSERT INTO baremes_frais (type_operation_id, montant_min, montant_max, frais) V
 (2, 5001, 10000, 100),
 (2, 10001, 25000, 200),
 (2, 25001, 50000, 400),
-(2, 50001, 100000, 800), -- Corrigé ici (50001)
+(2, 50001, 100000, 800),
 (2, 100001, 250000, 1500),
 (2, 250001, 500000, 1500),
 (2, 500001, 1000000, 2500),
@@ -109,8 +123,10 @@ INSERT INTO baremes_frais (type_operation_id, montant_min, montant_max, frais) V
 (3, 5001, 10000, 100),
 (3, 10001, 25000, 200),
 (3, 25001, 50000, 400),
-(3, 50001, 100000, 800), -- Corrigé ici (50001)
+(3, 50001, 100000, 800), 
 (3, 100001, 250000, 1500),
 (3, 250001, 500000, 1500),
 (3, 500001, 1000000, 2500),
 (3, 1000001, 2000000, 3000);
+
+-- Insertion des préfixes d'autres opérateurs avec leurs commissions

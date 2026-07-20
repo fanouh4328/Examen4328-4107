@@ -6,11 +6,12 @@ use App\Models\PrefixeModel;
 use App\Models\FraisModel;
 use App\Models\ClientModel;
 use App\Models\OperationModel;
+use App\Models\AutreOperateurModel;
 
 class Operateur extends BaseController
 {
 
-    // Tableau de bord opérateur
+  // Tableau de bord opérateur
     public function dashboard()
     {
         $operationModel = new OperationModel();
@@ -18,13 +19,23 @@ class Operateur extends BaseController
 
 
         $data = [
-            'gain' => $operationModel->getGainsOperateur(),
-            'clients' => $clientModel->getClients()
-        ];
+        // Gain de l'opérateur principal
+        'gain' => $operationModel->getGainsOperateur(),
+
+        // Gains liés aux autres opérateurs
+        'gains_autres_operateurs' => $operationModel->getGainsAutresOperateurs(),
+
+        // Montants à envoyer aux autres opérateurs
+        'montants_operateurs' => $operationModel->getMontantsParOperateur(),
+
+        // Liste des clients
+        'clients' => $clientModel->getClients()
+
+    ];
 
 
-        return view('operateur/dashboard', $data);
-    }
+    return view('operateur/dashboard', $data);
+}
 
 
 
@@ -89,5 +100,33 @@ class Operateur extends BaseController
 
         return redirect()->to('/operateur/baremes');
     }
+
+    // Gestion des autres opérateurs
+    public function autresOperateurs()
+    {
+        $model = new AutreOperateurModel();
+
+        $data = [
+            'operateurs' => $model->findAll()
+        ];
+
+    return view('operateur/autres_operateurs', $data);
+    }
+
+
+    // Ajouter un autre opérateur
+    public function ajouterOperateur()
+    {
+        $model = new AutreOperateurModel();
+
+        $model->insert([
+            'prefixe' => $this->request->getPost('prefixe'),
+            'commission' => $this->request->getPost('commission')
+        ]);
+
+    return redirect()->to('/operateur/autres-operateurs');
+    }
+
+  
 
 }

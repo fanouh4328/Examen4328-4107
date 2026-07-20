@@ -63,7 +63,10 @@ Préfixe
 
 
 
-<?php foreach($prefixes as $p): ?>
+<?php if (!isset($prefixes) || !is_array($prefixes)) {
+    $prefixes = [];
+}
+foreach($prefixes as $p): ?>
 
 <tr>
 

@@ -55,7 +55,11 @@ Action
 
 
 
-<?php foreach($baremes as $b): ?>
+<?php if (!isset($baremes) || !is_array($baremes)) {
+    $baremes = [];
+}
+
+foreach($baremes as $b): ?>
 
 
 <tr>
