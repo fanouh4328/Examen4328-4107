@@ -12,7 +12,7 @@ class Auth extends BaseController
         $clientModel = new ClientModel();
 
         // 1. Récupérer le numéro tapé dans le formulaire
-        $numero = $this->request->getPost('numero_telephone');
+        $numero = $this->request->getPost('num_tel');
 
         if (empty($numero)) {
             return redirect()->back()->with('error', 'Veuillez entrer un numéro de téléphone.');
@@ -34,25 +34,25 @@ class Auth extends BaseController
         }
 
         // 3. Chercher si le client existe déjà en BDD
-        $client = $clientModel->where('numero_telephone', $numero)->first();
+        $client = $clientModel->where('num_tel', $numero)->first();
 
         // 4. S'il n'existe pas, on le crée automatiquement avec un solde à 0
         if (!$client) {
             $dataClient = [
-                'numero_telephone' => $numero,
+                'num_tel' => $numero,
                 'solde'            => 0 // Solde initial à 0
             ];
             
-            $clientId = $clientModel->insert($dataClient);
+            $client_id = $clientModel->insert($dataClient);
             
             // Récupérer les infos du client fraîchement créé
-            $client = $clientModel->find($clientId);
+            $client = $clientModel->find($client_id);
         }
 
         // 5. Connecter le client en Session
         $session->set([
             'client_id' => $client['id'],
-            'numero_telephone' => $client['numero_telephone'],
+            'num_tel' => $client['num_tel'],
             'isLoggedIn' => true
         ]);
 

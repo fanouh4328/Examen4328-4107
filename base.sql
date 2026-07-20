@@ -72,7 +72,9 @@ SELECT
     t.id AS type_operation_id,
     t.nom AS type_operation,
     COUNT(tr.id) AS nombre_operations,
-    IFNULL(SUM(tr.frais_appliques), 0) AS total_gains
+    IFNULL(SUM(tr.frais_appliques), 0) AS total_gains,
+    IFNULL(SUM(tr.part_frais_normaux), 0) AS gains_normaux,
+    IFNULL(SUM(tr.part_commission_externe), 0) AS gains_commission_externe
 FROM types_operations t
 LEFT JOIN transactions tr ON t.id = tr.type_operation_id
 WHERE t.id IN (2, 3) -- 2 = retrait, 3 = transfert[cite: 1]
@@ -97,6 +99,16 @@ ORDER BY solde DESC;
 -- Insertion des préfixes initiaux exemples (033, 037)
 INSERT INTO prefixe_operateurs (prefixe) VALUES ('033'), ('037');
 
+<<<<<<< HEAD
+=======
+-- NOUVEAU V2 : Insertion des préfixes externes (Autres réseaux)
+INSERT INTO prefixes_externes (nom_operateur, prefixe) VALUES 
+('Telma', '034'),
+('Orange', '032');
+
+-- NOUVEAU V2 : Initialisation du taux de commission externe (ex: 5% supplémentaires)
+INSERT INTO config_commission_externe (pourcentage) VALUES (5.0);
+>>>>>>> b9af2bec4a79f27fad82eea630b2bf6d941064fe
 
 -- Insertion des types d'opérations obligatoires
 INSERT INTO types_operations (id, nom) VALUES 
@@ -127,6 +139,10 @@ INSERT INTO baremes_frais (type_operation_id, montant_min, montant_max, frais) V
 (3, 100001, 250000, 1500),
 (3, 250001, 500000, 1500),
 (3, 500001, 1000000, 2500),
+<<<<<<< HEAD
 (3, 1000001, 2000000, 3000);
 
 -- Insertion des préfixes d'autres opérateurs avec leurs commissions
+=======
+(3, 1000001, 2000000, 3000);
+>>>>>>> b9af2bec4a79f27fad82eea630b2bf6d941064fe

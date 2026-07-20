@@ -40,6 +40,7 @@ class Kint
     */
     public string $richTheme = 'aante-light.css';
     public bool $richFolder  = false;
+    public bool $richSort = true;
 
     /**
      * @var array<string, class-string<ValuePluginInterface>>|null
