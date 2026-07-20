@@ -14,13 +14,13 @@ class ClientModel extends Model
     /**
      * Gère l'auto-login : cherche le numéro, le crée s'il n'existe pas.
      */
-    public function autoLogin($num_tel)
+    public function autoLogin($client_id)
     {
-        $client = $this->where('num_tel', $num_tel)->first();
+        $client = $this->where('num_tel', $client_id)->first();
 
         if (!$client) {
             $id = $this->insert([
-                'num_tel' => $num_tel,
+                'num_tel' => $client_id,
                 'solde'   => 0.0
             ]);
             return $this->find($id);

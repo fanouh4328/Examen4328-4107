@@ -65,3 +65,21 @@
 - Dev B complet: configuration des préfixes, gestion des barèmes, tableau de bord opérateur.
 - Vérifier si le schéma doit réellement contenir un champ auto_login dans la table clients ou si la logique d'auto-inscription suffit.
 - Finaliser le workflow git demandé dans le sujet si la livraison n'est pas encore taguée/pushée.
+________________________________________________________________________
+
+v2
+____________________________________
+-Base: 
+  -différencier les opérateurs: ajouter une colonne ou  une nouvelle table pour lister les prefixes des autres resaux
+  -config de la commission externe: stockage du % supplementaire applique lors d'un transfert vers un autre opérateur
+  -mise à jour des transactions: à noter le montant envoyé, la part des frais normaux(opérateur), la part de la commission externe
+________________________________________________________________
+-Dev A: côté client pour la logique des transferts 
+  -inclure les frais de retrait: 
+     -ajouter une case à cocher dans le formule de transfert
+     -logique: si cochée, le systeme calcule à l'avance combien le destinataire va devoir payer en frais s'il retirait cet argent, et l'ajoute au montant total débité de l'expéditeur, puis le destinataire reçoit le montant net exact désiré
+  -envoi multiple pour la division du montant:
+    -permission de saisir plusieurs numéros dans le champ destinataire
+    -logique: si l'utilisateur met 3 numéros et saisit 30 000 Ar, le système fait 3 transferts distincts de 10 000 Ar chacun
+    -à valider si chaque numéro est interne ou externe pour appliquer les bons frais
+

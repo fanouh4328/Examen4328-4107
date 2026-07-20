@@ -30,28 +30,37 @@ class Client extends BaseController
         return view('client/login');
     }
 
-    public function doLogin()
-    {
-        $num_tel = trim((string) $this->request->getPost('num_tel'));
+   public function doLogin()
+{
+    $num_tel = trim((string) $this->request->getPost('num_tel'));
 
-        if ($num_tel === '') {
-            return $this->redirectToLogin('Veuillez saisir un numéro de téléphone.');
-        }
-        
-        $prefixe = substr($num_tel, 0, 3);
-        if (!in_array($prefixe, ['033', '037'], true)) {
-            return $this->redirectToLogin('Numéro invalide. Préfixes acceptés : 033 ou 037.');
-        }
-
-        $client = $this->clientModel->autoLogin($num_tel);
-        
-        $this->session->set([
-            'client_id' => $client['id'],
-            'num_tel'   => $client['num_tel']
-        ]);
-
-        return redirect()->to(self::DASHBOARD_ROUTE);
+    if ($num_tel === '') {
+        return $this->redirectToLogin('Veuillez saisir un numéro de téléphone.');
     }
+
+    $prefixe = substr($num_tel, 0, 3);
+    if (!in_array($prefixe, ['033', '037'], true)) {
+        return $this->redirectToLogin('Numéro invalide. Préfixes acceptés : 033 ou 037.');
+    }
+
+    $client = $this->clientModel->autoLogin($num_tel);
+
+    // 🚨 SÉCURITÉ : Si le client n'existe pas en base SQLite, on le crée à la volée pour le test
+    if (!$client) {
+        $this->clientModel->insert([
+            'num_tel' => $num_tel,
+            'solde'   => 50000.0 // Solde initial de test
+        ]);
+        $client = $this->clientModel->autoLogin($num_tel);
+    }
+
+    $this->session->set([
+        'client_id' => $client['id'],
+        'num_tel'   => $client['num_tel']
+    ]);
+
+    return redirect()->to(self::DASHBOARD_ROUTE);
+}
 
     public function logout()
     {
@@ -78,11 +87,11 @@ class Client extends BaseController
     {
         if (!$this->session->has('client_id')) return redirect()->to('/client/login');
 
-    // Si la requête n'est pas un POST, on renvoie gentiment au dashboard
-    if ($this->request->getMethod() !== 'post') {
-        return redirect()->to('/client/dashboard');
-    }
-    
+        // Si la requête n'est pas un POST, on renvoie gentiment au dashboard
+        if ($this->request->getMethod() !== 'post') {
+            return redirect()->to('/client/dashboard');
+        }
+
         if (!$this->isAuthenticated()) {
             return $this->redirectToLogin();
         }
@@ -203,13 +212,11 @@ class Client extends BaseController
 
     private function redirectToLogin(?string $errorMessage = null)
     {
-        $redirect = redirect()->to(self::LOGIN_ROUTE);
-
         if ($errorMessage === null) {
-            return $redirect;
+            return redirect()->to(self::LOGIN_ROUTE);
         }
 
-        return $redirect->with('error', $errorMessage);
+        return redirect()->to(self::LOGIN_ROUTE)->with('error', $errorMessage);
     }
 
     private function redirectBackWithError(string $message)
