@@ -29,7 +29,7 @@ class Database extends Config
         'hostname'     => 'localhost',
         'username'     => 'root',
         'password'     => '',
-        'database'     => 'database.db',
+        'database'     => 'C:/xampp/htdocs/M.Rojo/CI4-New-Project/Examen4328-4107/writable/database.db',
         'DBDriver'     => 'SQLite3',
         'DBPrefix'     => '',
         'pConnect'     => false,

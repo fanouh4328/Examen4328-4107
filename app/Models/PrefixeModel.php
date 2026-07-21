@@ -4,7 +4,7 @@ namespace App\Models;
 
 use CodeIgniter\Model;
 
-class PrefixeOperateurModel extends Model
+class PrefixeModel extends Model
 {
     protected $table = 'prefixe_operateurs';
 

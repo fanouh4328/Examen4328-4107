@@ -6,7 +6,7 @@ use CodeIgniter\Model;
 
 class FraisModel extends Model
 {
-    protected $table = 'baremes_fairs';
+    protected $table = 'baremes_frais';
 
     protected $primaryKey = 'id';
 

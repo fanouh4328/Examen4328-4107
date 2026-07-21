@@ -3,20 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <title>Mon Espace Client</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body class="bg-light">
     <?php $client = $client ?? ['id' => null, 'num_tel' => '', 'solde' => 0]; ?>
     <nav class="navbar navbar-dark bg-dark mb-4">
         <div class="container">
             <span class="navbar-brand">Mobile Money</span>
-            <span class="navbar-text text-white">Numéro : <strong><?= $client['num_tel'] ?? '' ?></strong></span>
+            <span class="navbar-text text-white">Numéro : <strong><?= esc($client['num_tel'] ?? '') ?></strong></span>
             <a href="<?= base_url('/client/logout') ?>" class="btn btn-danger btn-sm">Déconnexion</a>
         </div>
     </nav>
 
     <div class="container">
-        <!-- Messages Alertes -->
         <?php if(session()->getFlashdata('success')): ?>
             <div class="alert alert-success"><?= session()->getFlashdata('success') ?></div>
         <?php elseif(session()->getFlashdata('error')): ?>
@@ -24,7 +23,6 @@
         <?php endif; ?>
 
         <div class="row">
-            <!-- GAUCHE : Solde et Formulaires d'opérations -->
             <div class="col-md-5">
                 <div class="card text-white bg-success mb-4 shadow-sm">
                     <div class="card-body text-center">
@@ -37,6 +35,7 @@
                     <div class="card-header bg-secondary text-white">Effectuer une opération</div>
                     <div class="card-body">
                         <form action="<?= base_url('/client/executerOperation') ?>" method="post">
+                            <?= csrf_field() ?>
                             <div class="mb-3">
                                 <label for="type_op_select" class="form-label">Type d'opération</label>
                                 <select name="type_operation" id="type_op_select" class="form-select" onchange="toggleDestField()" required>
@@ -62,7 +61,6 @@
                 </div>
             </div>
 
-            <!-- DROITE : Historique (Tableaux Bootstrap) -->
             <div class="col-md-7">
                 <div class="card shadow-sm">
                     <div class="card-header bg-dark text-white">Historique de vos transactions</div>
@@ -94,14 +92,14 @@
                                             <td><?= date('d/m/Y H:i', strtotime($t['date_transaction'])) ?></td>
                                             <td>
                                                 <span class="badge bg-<?= $badgeClass ?>">
-                                                    <?= ucfirst($t['type_nom']) ?>
+                                                    <?= ucfirst(esc($t['type_nom'])) ?>
                                                 </span>
                                             </td>
                                             <td><strong><?= number_format($t['montant'], 0, '', ' ') ?> Ar</strong></td>
-                                            <td class="text-danger"><?= $t['frais_appliques'] > 0 ? $t['frais_appliques'].' Ar' : '-' ?></td>
+                                            <td class="text-danger"><?= $t['frais_appliques'] > 0 ? number_format($t['frais_appliques'], 0, '', ' ').' Ar' : '-' ?></td>
                                             <td>
                                                 <?php if($t['type_operation_id'] == 3): ?>
-                                                    <?= isset($client['id']) && $t['client_id'] == $client['id'] ? 'Vers: '.$t['destinataire'] : 'De: '.$t['expéditeur'] ?>
+                                                    <?= isset($client['id']) && $t['client_id'] == $client['id'] ? 'Vers: '.esc($t['destinataire']) : 'De: '.esc($t['expediteur']) ?>
                                                 <?php else: ?>
                                                     -
                                                 <?php endif; ?>

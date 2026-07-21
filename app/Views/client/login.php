@@ -16,6 +16,7 @@
                             <div class="alert alert-danger"><?= session()->getFlashdata('error') ?></div>
                         <?php endif; ?>
                         <form action="<?= base_url('/client/doLogin') ?>" method="post">
+                            <?= csrf_field() ?>
                             <div class="mb-3">
                                 <label for="num_tel" class="form-label">Entrez votre numéro de téléphone</label>
                                 <input id="num_tel" type="text" name="num_tel" class="form-control" placeholder="Ex: 0331234567" required>

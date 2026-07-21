@@ -82,4 +82,10 @@ ________________________________________________________________
     -permission de saisir plusieurs numéros dans le champ destinataire
     -logique: si l'utilisateur met 3 numéros et saisit 30 000 Ar, le système fait 3 transferts distincts de 10 000 Ar chacun
     -à valider si chaque numéro est interne ou externe pour appliquer les bons frais
+______________________________________________________________________
+2 Aléas:
+tag etu
+-Promotion % sur les frais de transfert vers le même operateur(-20% frais)
+
+
 

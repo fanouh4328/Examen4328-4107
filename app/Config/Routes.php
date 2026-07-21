@@ -10,6 +10,9 @@ $routes->get('/client/logout', 'Client::logout');
 $routes->get('/client/dashboard', 'Client::dashboard');
 $routes->match(['get', 'post'], 'client/executerOperation', 'Client::executerOperation');
 
+// Ajout de la route pour le transfert groupé / V2
+$routes->post('transaction/processTransfert', 'Transaction::processTransfert');
+
 // Partie opérateur
 
 $routes->get('operateur', 'Operateur::dashboard');

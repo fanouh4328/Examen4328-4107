@@ -6,18 +6,30 @@ class Home extends BaseController
 {
     public function index(): string
     {
-    //    return view('welcome_message');
-    
-    $db = \Config\Database::connect();
-    
-    // Lit ton fichier base.sql à la racine
-    $sql = file_get_contents(ROOTPATH . 'base.sql');
-    
-    // Injecte le SQL directement dans SQLite
-    if ($db->simpleQuery($sql)) {
-        return "La base de données a été injectée avec succès !";
-    } else {
-        return "Erreur lors de l'injection.";
-    }
+        $db = \Config\Database::connect();
+        
+        $sqlFile = ROOTPATH . 'base.sql';
+        if (!file_exists($sqlFile)) {
+            return "Le fichier base.sql n'existe pas.";
+        }
+
+        $sql = file_get_contents($sqlFile);
+        $queries = explode(';', $sql);
+        
+        $errors = 0;
+        foreach ($queries as $query) {
+            $query = trim($query);
+            if (!empty($query)) {
+                if (!$db->query($query)) {
+                    $errors++;
+                }
+            }
+        }
+
+        if ($errors === 0) {
+            return "La base de données a été injectée avec succès !";
+        } else {
+            return "Des erreurs sont survenues lors de l'injection.";
+        }
     }
 }

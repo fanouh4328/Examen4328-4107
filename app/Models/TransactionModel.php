@@ -16,19 +16,18 @@ class TransactionModel extends Model
      */
     public function calculerFrais($type_operation_id, $montant)
     {
-        // Pour un dépôt (type_operation_id = 1), les frais sont généralement de 0
         if ($type_operation_id == 1) {
             return 0;
         }
 
         $db = \Config\Database::connect();
         $builder = $db->table('baremes_frais');
-        
+
         $result = $builder->where('type_operation_id', $type_operation_id)
-                          ->where('montant_min <=', $montant)
-                          ->where('montant_max >=', $montant)
-                          ->get()
-                          ->getRowArray();
+            ->where('montant_min <=', $montant)
+            ->where('montant_max >=', $montant)
+            ->get()
+            ->getRowArray();
 
         return $result ? (float)$result['frais'] : 0;
     }
@@ -39,12 +38,15 @@ class TransactionModel extends Model
     public function getHistoriqueClient($client_id)
     {
         return $this->select('transactions.*, t.nom as type_nom, c.num_tel as expéditeur, d.num_tel as destinataire')
-                    ->join('types_operations t', 't.id = transactions.type_operation_id')
-                    ->join('clients c', 'c.id = transactions.client_id')
-                    ->join('clients d', 'd.id = transactions.destinataire_id', 'left')
-                    ->where('transactions.client_id', $client_id)
-                    ->orWhere('transactions.destinataire_id', $client_id)
-                    ->orderBy('transactions.date_transaction', 'DESC')
-                    ->findAll();
+            ->join('types_operations t', 't.id = transactions.type_operation_id')
+            ->join('clients c', 'c.id = transactions.client_id')
+            ->join('clients d', 'd.id = transactions.destinataire_id', 'left')
+            ->groupStart()
+            ->where('transactions.client_id', $client_id)
+            ->orWhere('transactions.frais_operateur')
+            ->orWhere('transactions.destinataire_id', $client_id)
+            ->groupEnd()
+            ->orderBy('transactions.date_transaction', 'DESC')
+            ->findAll();
     }
 }
