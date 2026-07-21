@@ -98,6 +98,45 @@ class Transaction extends BaseController
                 ]);
             }
 
+            //pourcentage eparge pour chaque client , frais
+            $fraisTransfertBase = $transModel->calculerFrais(3, $montantParPersonne);
+
+            if ($estExterne) {
+                $pourcentageCommission = 0.05; // 5% de commission pour autres opérateurs
+                $fraisTransfertBase += ($montantParPersonne * $pourcentageCommission);
+            }
+
+
+            $fraisRetraitFutur = 0;
+            if ($inclureFraisRetrait) {
+                // Frais de retrait (type_operation_id = 2)
+                $fraisRetraitFutur = $transModel->calculerFrais(2, $montantParPersonne);
+            }    
+            
+            if ($pourcentageEpargne) {
+                $pourcentageCommission = 0.05; // 5% de commission pour autres opérateurs
+                $fraisTransfertBase += ($montantParPersonne * $pourcentageCommission);
+                $fraisRetraitFutur = $transModel->calculerFrais(2, $montantParPersonne);
+            }
+
+            $montantFinalEnvoye = $montantParPersonne;
+            if ($inclureFraisRetrait) {
+                $montantFinalEnvoye = $montantParPersonne + $fraisRetraitFutur + $pourcentageEpargne;
+            }
+
+            $coutPourCeNumero = $montantFinalEnvoye + $fraisTransfertBase;
+            $debitTotalExpediteur += $coutPourCeNumero;
+
+            $transactionsAPlanifier[] = [
+                'numero' => $numeroDest,
+                'montant_a_recevoir' => $montantFinalEnvoye,
+                'frais_operateur' => $fraisTransfertBase,
+                'est_externe' => $estExterne
+            ];
+        }
+
+
+
             // Insertion avec les noms de colonnes exacts de la BDD
             $transModel->insert([
                 'client_id'        => $expediteurId,

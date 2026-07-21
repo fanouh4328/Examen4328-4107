@@ -87,5 +87,10 @@ ______________________________________________________________________
 tag etu
 -Promotion % sur les frais de transfert vers le même operateur(-20% frais)
 
+samihafa pour chaque client ny pourcentage epargne 
+misy transfert tonga aty amiko de misy frais , 
+
+definit pourcentage 1
+
 
 
